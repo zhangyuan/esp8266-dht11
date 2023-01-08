@@ -33,9 +33,11 @@ void setup()
     for (;;) ;
   }
 
+  display.clearDisplay();
   display.setTextSize(TEXT_SIZE);
   display.setTextColor(WHITE);
   display.cp437(true);
+  display.display();
 
   delay(2000);
 
@@ -44,16 +46,20 @@ void setup()
 
 void loop()
 {
-
-  delay(2000);
-
   float h = dht.readHumidity();
   float t = dht.readTemperature();
   float f = dht.readTemperature(true);
 
+  
   if (isnan(h) || isnan(t) || isnan(f))
   {
     Serial.println("Failed to read from DHT sensor!");
+    
+    display.clearDisplay();
+    display.setCursor(0, 0);
+    display.print("ERROR");
+    display.display();
+
     return;
   }
 
@@ -85,4 +91,6 @@ void loop()
   display.print(" *C ");
 
   display.display();
+
+  delay(2000);
 }
